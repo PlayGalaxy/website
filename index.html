@@ -37,6 +37,34 @@
             transform: scale(1.1);
         }
 
+        .search-bar {
+            text-align: center;
+            margin: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #3e1f5c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2a1438;
+            color: #ffffff;
+        }
+
         .games-section {
             display: flex;
             justify-content: center;
@@ -126,9 +154,14 @@
     </a>
 </header>
 
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for games...">
+    <input type="submit" value="Search" onclick="searchGames()">
+</div>
+
 <section class="games-section">
     <!-- Game List -->
-    <ul class="game-list">
+    <ul class="game-list" id="gameList">
         <!-- Add more games as needed -->
         <li class="game">
             <a href="https://playgalaxy.github.io/website/games/FlappyBird.html">
@@ -142,7 +175,7 @@
                 <p>Busy Bees 2</p>
             </a>
         </li>
-            <li class="game">
+        <li class="game">
             <a href="https://playgalaxy.github.io/website/games/Protect.html">
                 <img src="https://i.imgur.com/2GdDt4I.png" alt="Protect">
                 <p>Protect</p>
@@ -155,6 +188,26 @@
 <footer class="footer">
     <p>&copy; 2023 PlayGalaxy. All Rights Reserved.</p>
 </footer>
+
+<script>
+    function searchGames() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById('gameList');
+        li = ul.getElementsByClassName('game');
+
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName('p')[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = '';
+            } else {
+                li[i].style.display = 'none';
+            }
+        }
+    }
+</script>
 
 </body>
 </html>
