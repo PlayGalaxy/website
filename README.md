@@ -1,2 +1,2 @@
-# website
-Websitewith html games in mind.
+# Website
+Website with html games in mind.
