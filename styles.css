@@ -48,8 +48,22 @@ header img {
     margin-top: 10px;
 }
 
-footer {
+.footer {
     text-align: center;
     padding: 20px;
     background-color: #3e1f5c;
+}
+
+/* Interface styles for Flappy Bird Legacy */
+#flappy-bird-legacy-interface {
+    background-color: #2a1438;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#flappy-bird-legacy-interface img {
+    width: 180px;
+    height: 240px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
