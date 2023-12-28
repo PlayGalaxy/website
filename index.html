@@ -8,7 +8,7 @@
         body {
             background-color: #3e1f5c;
             color: #ffffff;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -19,9 +19,19 @@
             background-color: #3e1f5c;
         }
 
+        header a {
+            display: inline-block;
+        }
+
         header img {
-            max-width: 100%;
+            max-width: 150px;
             height: auto;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        header img:hover {
+            transform: scale(1.1);
         }
 
         .games-section {
@@ -40,12 +50,11 @@
         }
 
         .game {
-            margin: 10px; /* Smaller margin */
+            margin: 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
             transition: transform 0.3s;
-            max-width: 150px; /* Smaller width */
         }
 
         .game img {
@@ -60,8 +69,8 @@
         }
 
         .game p {
-            font-size: 1em; /* Slightly smaller font size */
-            margin-top: 5px; /* Smaller margin top */
+            font-size: 1.2em;
+            margin-top: 10px;
         }
 
         .footer {
@@ -78,63 +87,50 @@
         }
 
         #flappy-bird-legacy-interface img {
-            width: 100%; /* Adjusted width to fill the container */
-            height: auto;
+            width: 180px;
+            height: 240px;
             border-radius: 5px;
             margin-bottom: 10px;
+            transition: transform 0.3s;
         }
 
-        /* Search bar styles */
-        .search-bar {
+        #flappy-bird-legacy-interface:hover img {
+            transform: scale(1.1);
+        }
+
+        .authors {
+            margin-top: 20px;
             text-align: center;
-            margin: 20px;
+            color: #ffffff;
         }
 
-        .search-input {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            width: 200px;
+        .authors a {
+            color: #ffffff;
+            text-decoration: none;
         }
 
-        .search-btn {
-            padding: 10px;
-            background-color: #ffffff;
-            color: #3e1f5c;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .authors a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="https://github.com/PlayGalaxy/website/blob/main/logo.png?raw=true" alt="PlayGalaxy Logo">
+    <a href="https://playgalaxy.github.io/website/">
+        <img src="https://github.com/PlayGalaxy/website/blob/main/logo.png?raw=true" alt="PlayGalaxy Logo">
+    </a>
 </header>
 
-<!-- Search bar -->
-<div class="search-bar">
-    <input type="text" class="search-input" placeholder="Search for games..." id="searchInput">
-    <button class="search-btn" onclick="searchGames()">Search</button>
-</div>
-
-<section class="games-section" id="gameList">
+<section class="games-section">
     <!-- Game List -->
     <ul class="game-list">
+        <!-- Add more games as needed -->
         <li class="game">
-            <img src="game1_image.jpg" alt="Game 1">
-            <p>Super Awesome Game 1</p>
-        </li>
-        <li class="game" id="flappy-bird-legacy-interface">
-            <a href="https://playgalaxy.github.io/website/games/FlappyBird.html" target="_blank">
-                <img src="https://cwpwp2.betterthanpaper.com/wp-content/uploads/2014/05/Flappy-Bird-header.jpg" alt="Flappy Bird">
-                <p>Flappy Bird</p>
+            <a href="https://playgalaxy.github.io/website/games/FlappyBird.html">
+                <img src="https://i.imgur.com/Qo00frr.jpg" alt="Flappy Bird Legacy">
+                <p>Flappy Bird Legacy</p>
             </a>
-        </li>
-        <li class="game">
-            <img src="game2_image.jpg" alt="Game 2">
-            <p>Amazing Game 2: The Sequel</p>
         </li>
         <!-- Add more games as needed -->
     </ul>
@@ -143,26 +139,6 @@
 <footer class="footer">
     <p>&copy; 2023 PlayGalaxy. All Rights Reserved.</p>
 </footer>
-
-<script>
-    function searchGames() {
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById('searchInput');
-        filter = input.value.toUpperCase();
-        ul = document.getElementById('gameList');
-        li = ul.getElementsByClassName('game');
-
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName('p')[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = '';
-            } else {
-                li[i].style.display = 'none';
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
