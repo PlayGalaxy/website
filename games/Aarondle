@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aarondle</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  .letter {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    border: 1px solid #333;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .correct-letter {
+    background-color: #90EE90; /* Light green */
+  }
+  .incorrect-letter {
+    background-color: #FFA07A; /* Light salmon */
+  }
+  #word {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+  #letter-buttons {
+    margin-top: 20px;
+  }
+  #input {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  #guesses {
+    margin-top: 20px;
+    text-align: center;
+  }
+  table {
+    margin: auto;
+    border-collapse: collapse;
+  }
+  td {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #333;
+    font-size: 24px;
+  }
+</style>
+</head>
+<body>
+<h1>Aarondle</h1>
+<div id="guesses">
+  <table id="guess-table">
+    <!-- Pre-populate with blank rows -->
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+</div>
+<div id="letter-buttons">
+  <div class="letter" onclick="insertLetter('a')">A</div>
+  <div class="letter" onclick="insertLetter('b')">B</div>
+  <div class="letter" onclick="insertLetter('c')">C</div>
+  <div class="letter" onclick="insertLetter('d')">D</div>
+  <div class="letter" onclick="insertLetter('e')">E</div>
+  <div class="letter" onclick="insertLetter('f')">F</div>
+  <div class="letter" onclick="insertLetter('g')">G</div>
+  <div class="letter" onclick="insertLetter('h')">H</div>
+  <div class="letter" onclick="insertLetter('i')">I</div>
+  <div class="letter" onclick="insertLetter('j')">J</div>
+  <div class="letter" onclick="insertLetter('k')">K</div>
+  <div class="letter" onclick="insertLetter('l')">L</div>
+  <div class="letter" onclick="insertLetter('m')">M</div>
+  <div class="letter" onclick="insertLetter('n')">N</div>
+  <div class="letter" onclick="insertLetter('o')">O</div>
+  <div class="letter" onclick="insertLetter('p')">P</div>
+  <div class="letter" onclick="insertLetter('q')">Q</div>
+  <div class="letter" onclick="insertLetter('r')">R</div>
+  <div class="letter" onclick="insertLetter('s')">S</div>
+  <div class="letter" onclick="insertLetter('t')">T</div>
+  <div class="letter" onclick="insertLetter('u')">U</div>
+  <div class="letter" onclick="insertLetter('v')">V</div>
+  <div class="letter" onclick="insertLetter('w')">W</div>
+  <div class="letter" onclick="insertLetter('x')">X</div>
+  <div class="letter" onclick="insertLetter('y')">Y</div>
+  <div class="letter" onclick="insertLetter('z')">Z</div>
+  <div class="letter" onclick="backspace()">Backspace</div>
+</div>
+<input type="text" id="input" maxlength="5" readonly>
+<button onclick="guess()">Guess</button>
+
+<script>
+  const apiKey = 'YOUR_API_KEY'; // Replace 'YOUR_API_KEY' with your API key
+  const apiUrl = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&minLength=5&maxLength=5&api_key=${apiKey}`;
+
+  const words = {
+    "2024-02-16": "angle", // Example word for today, you can replace it with your own words for each day
+    // Add more dates and words as needed
+  };
+
+  const date = new Date();
+  const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  let targetWord = words[dateString];
+  
+  // Simple encryption function
+  function encrypt(word) {
+    return word.split("").map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join("");
+  }
+  
+  // Decrypt function
+  function decrypt(word) {
+    return word.split("").map(char => String.fromCharCode(char.charCodeAt(0) - 1)).join("");
+  }
+  
+  let guesses = [];
+  let wordDisplay = "?????";
+  
+  function updateWordDisplay() {
+    let display = "";
+    for (let i = 0; i < wordDisplay.length; i++) {
+      if (guesses.includes(decrypt(targetWord)[i])) {
+        if (decrypt(targetWord)[i] === targetWord[i]) {
+          display += `<span class="correct-letter">${decrypt(targetWord)[i]}</span>`;
+        } else {
+          display += `<span class="incorrect-letter">${decrypt(targetWord)[i]}</span>`;
+        }
+      } else {
+        display += "?";
+      }
+    }
+    document.getElementById("word").innerHTML = display;
+  }
+  
+  async function getRandomWord() {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      targetWord = data.word.toLowerCase();
+      updateWordDisplay();
+    } catch (error) {
+      console.error('Error fetching random word:', error);
+    }
+  }
+  
+  function insertLetter(letter) {
+    const input = document.getElementById("input");
+    input.value += letter;
+  }
+  
+  function backspace() {
+    const input = document.getElementById("input");
+    input.value = input.value.slice(0, -1);
+  }
+  
+  async function guess() {
+    let input = document.getElementById("input").value.toLowerCase();
+    if (input.length !== 5 || !/^[a-z]+$/.test(input)) {
+      alert("Please enter a valid 5-letter word using only alphabetic characters.");
+      return;
+    }
+
+    // Check if the word exists using the API
+    const isValidWord = await checkWordExistence(input);
+    if (!isValidWord) {
+      alert("Please enter a valid English word with 5 letters.");
+      return;
+    }
+
+    if (guesses.includes(input)) {
+      alert("You've already guessed that word!");
+      return;
+    }
+    guesses.push(input);
+    updateWordDisplay();
+    document.getElementById("guess-table").appendChild(createGuessRow(input));
+    if (input === decrypt(targetWord)) {
+      alert("Congratulations! You guessed the word: " + decrypt(targetWord));
+      resetGame();
+    }
+  }
+
+  async function checkWordExistence(word) {
+    try {
+      const response = await fetch(`https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${apiKey}`);
+      const data = await response.json();
+      return data.length > 0; // If there is at least one definition, consider it a valid word
+    } catch (error) {
+      console.error('Error checking word existence:', error);
+      return false; // Assume word doesn't exist in case of error
+    }
+  }
+  
+  function resetGame() {
+    getRandomWord();
+    guesses = [];
+    wordDisplay = "?????";
+    updateWordDisplay();
+    document.getElementById("guesses").innerHTML = "";
+    document.getElementById("input").value = "";
+    // Reset the guess table with blank rows
+    const guessTable = document.getElementById("guess-table");
+    for (let i = 0; i < guessTable.rows.length; i++) {
+      const row = guessTable.rows[i];
+      for (let j = 0; j < row.cells.length; j++) {
+        row.cells[j].textContent = "";
+      }
+    }
+  }
+  
+  function createGuessRow(word) {
+    const guessTable = document.getElementById("guess-table");
+    const newRow = guessTable.rows[guessTable.rows.length - 1]; // Get the last row
+    for (let i = 0; i < word.length; i++) {
+      newRow.cells[i].textContent = word[i].toUpperCase();
+    }
+    return newRow;
+  }
+
+  getRandomWord(); // Get a random word when the page loads
+</script>
+</body>
+</html>
